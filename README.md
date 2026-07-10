@@ -3,7 +3,7 @@
 
 Rapid pressure-drop and velocity prediction for flow through a hyperbolic-throat
 venturi element, using an ANN (MLP) surrogate trained on a physics-based
-synthetic CFD dataset, benchmarked against Random Forest.
+ CFD dataset generated from COMSOL, benchmarked against Random Forest.
 
 ## Objective
 
@@ -30,16 +30,11 @@ techniques (MLP and Random Forest).
 
 ### 1. Dataset generation (`generate_dataset.py`)
 
-Real CFD data wasn't available, so the dataset is **simulated from governing
-fluid-mechanics equations** rather than drawn from arbitrary random numbers,
+The data set was generated with help of comsol multiphysics,
 then perturbed with noise to emulate real CFD sample-to-sample scatter (mesh
 discretization, solver tolerance, turbulence-model closure error):
 
 - **Continuity**: `V = Q / A` at inlet and throat
-- **Bernoulli** (ideal acceleration pressure drop): `dP_ideal = 0.5·ρ·(V_throat² − V_in²)`
-- **Darcy–Weisbach friction** over the throat length: `dP_friction = f·(L/D)·0.5·ρ·V_throat²`,
-  with the friction factor `f` from the laminar (`f = 64/Re`) or Blasius
-  turbulent (`f = 0.316·Re^-0.25`) correlation depending on `Re`
 - Final pressure drop and throat velocity are each multiplied by Gaussian
   noise (~9% and ~6% respectively) to mimic real CFD scatter — the surrogate
   is therefore **not expected to fit perfectly**, matching real-world behaviour.
