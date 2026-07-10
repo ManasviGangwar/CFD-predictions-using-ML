@@ -15,8 +15,6 @@ techniques (MLP and Random Forest).
 
 | File | Purpose |
 |---|---|
-| `generate_dataset.py` | Generates the physics-based synthetic CFD dataset |
-| `cfd_dataset.csv` | 600-sample dataset (output of the above) |
 | `train_model.py` | Sweeps MLP hyperparameters, trains the deployed model, benchmarks vs Random Forest |
 | `compare_models.py` | Dedicated ReLU-vs-tanh / epochs / neuron-count comparison study |
 | `model_export.json` | Trained MLP weights + scaler stats, exported for deployment (output of `train_model.py`) |
@@ -27,12 +25,6 @@ techniques (MLP and Random Forest).
 | `comparison_summary.csv` | Full hyperparameter grid results (output of `compare_models.py`) |
 
 ## Approach
-
-### 1. Dataset generation (`generate_dataset.py`)
-
-The data set was generated with help of comsol multiphysics,
-then perturbed with noise to emulate real CFD sample-to-sample scatter (mesh
-discretization, solver tolerance, turbulence-model closure error):
 
 - **Continuity**: `V = Q / A` at inlet and throat
 - Final pressure drop and throat velocity are each multiplied by Gaussian
