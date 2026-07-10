@@ -53,9 +53,7 @@ y_test_s = y_scaler.transform(y_test)
 X_tr, X_val, y_tr, y_val = train_test_split(
     X_train_s, y_train_s, test_size=0.2, random_state=RNG)
 
-# ---------------------------------------------------------------------
-# Hyperparameter sweep -- single hidden layer only, per project spec
-# ---------------------------------------------------------------------
+
 neuron_grid = [2, 4, 6, 8, 10, 12, 15, 18, 20, 22, 25]
 activation_grid = ["relu", "tanh", "logistic"]
 lr_grid = [0.001, 0.01, 0.05]
@@ -93,19 +91,14 @@ mlp_pred = y_scaler.inverse_transform(mlp_pred_s)
 mlp_mse = mean_squared_error(y_test, mlp_pred, multioutput="raw_values")
 mlp_r2 = r2_score(y_test, mlp_pred, multioutput="raw_values")
 
-# ---------------------------------------------------------------------
-# Random Forest benchmark
-# ---------------------------------------------------------------------
+
 rf = RandomForestRegressor(n_estimators=300, random_state=RNG)
 rf.fit(X_train, y_train)
 rf_pred = rf.predict(X_test)
 rf_mse = mean_squared_error(y_test, rf_pred, multioutput="raw_values")
 rf_r2 = r2_score(y_test, rf_pred, multioutput="raw_values")
 
-# Predictions across the FULL dataset (train+val+test) for plotting --
-# metrics above are still computed on the held-out test set only, this
-# is purely so the scatter plots show all 600 points, not just the ~120
-# in the test split.
+
 X_all_s = x_scaler.transform(X)
 mlp_pred_all = y_scaler.inverse_transform(best_mlp.predict(X_all_s))
 rf_pred_all = rf.predict(X)
@@ -161,9 +154,7 @@ plt.tight_layout()
 plt.savefig("model_results.png", dpi=150)
 print("\nSaved plot -> model_results.png")
 
-# ---------------------------------------------------------------------
-# Export best MLP for JS deployment (single hidden layer forward pass)
-# ---------------------------------------------------------------------
+
 export = {
     "features": FEATURES,
     "targets": TARGETS,
